@@ -19,7 +19,7 @@ export default class DiscussionScreen extends React.Component {
 
     this.state = {
       bloomAuthenticated: false,
-      value: '',
+      formInputValue: '',
       rangeValue: '',
       showLoadingModal: false,
       showBloomAuthModal: false,
@@ -83,7 +83,7 @@ export default class DiscussionScreen extends React.Component {
   }
 
   getValidationState() {
-    const length = this.state.value.length;
+    const length = this.state.formInputValue.length;
     if (length > 10) return 'success';
     else if (length > 5) return 'warning';
     else if (length > 0) return 'error';
@@ -96,7 +96,7 @@ export default class DiscussionScreen extends React.Component {
   }
 
   handleChange(e) {
-    this.setState({ value: e.target.value });
+    this.setState({ formInputValue: e.target.value });
   }
 
   handleClose() {
@@ -224,7 +224,7 @@ export default class DiscussionScreen extends React.Component {
                       }}> Enter your comments about the proposal. </ControlLabel>
                     <FormControl
                       type="text"
-                      value={this.state.value}
+                      value={this.state.formInputValue}
                       placeholder="Enter your comments about the proposal."
                       onChange={this.handleChange}
                       style={{
@@ -289,7 +289,13 @@ export default class DiscussionScreen extends React.Component {
                           </Col>
                         </Row>
                         <Row>
-                          <div> {comment.text} </div>
+                          <div style={{ padding: 30 }}> {comment.text} </div>
+                        </Row>
+                        <Row className="signaling-actions" style={{ display: 'flex', width: '100%', padding: 30, alignItems: 'flexEnd' }}>
+                          <button style={{ flex: 1, borderRadius: 7, backgroundColor: '#4a6dff' }}> <FA name="thumbs-up" /> </button>
+                          <button style={{ flex: 1, borderRadius: 7, backgroundColor: '#4a6dff' }}> <FA name="thumbs-down" /> </button>
+                          <button style={{ flex: 1, borderRadius: 7, backgroundColor: '#4a6dff' }}> <FA name="heart" /> </button>
+                          <button style={{ flex: 1, borderRadius: 7, backgroundColor: '#4a6dff' }}> <FA name="poop" /> </button>
                         </Row>
                       </Grid>
                     )
