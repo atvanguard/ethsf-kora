@@ -1,5 +1,5 @@
 import React from 'react';
-import EmbarkJS from 'Embark/EmbarkJS';
+// import EmbarkJS from 'Embark/EmbarkJS';
 import { Badge, Button, FormGroup, Modal, ProgressBar, Popover, OverlayTrigger, ControlLabel, FormControl, HelpBlock, Grid, Row, Col } from 'react-bootstrap';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
@@ -24,6 +24,7 @@ export default class DiscussionScreen extends React.Component {
       rangeValue: '',
       showLoadingModal: false,
       showBloomAuthModal: false,
+      thresholdReached: false,
       loadingProgress: 0,
       comments: [
         {
@@ -133,30 +134,6 @@ export default class DiscussionScreen extends React.Component {
     });
   }
 
-  componentDidMount() {
-    EmbarkJS.onReady((err) => {
-      this.setState({blockchainEnabled: true});
-      if (err) {
-        // If err is not null then it means something went wrong connecting to ethereum
-        // you can use this to ask the user to enable metamask for e.g
-        return this.setState({error: err.message || err});
-      }
-
-      EmbarkJS.Messages.Providers.whisper.getWhisperVersion((err, _version) => {
-        if (err) {
-          return console.log(err);
-        }
-        this.setState({whisperEnabled: true});
-      });
-
-      EmbarkJS.Storage.isAvailable().then((result) => {
-        this.setState({storageEnabled: result});
-      }).catch(() => {
-        this.setState({storageEnabled: false});
-      });
-    });
-  }
-
   renderBloomAuthModal() {
     const defaultData = {
       action: Action.attestation,
@@ -202,9 +179,11 @@ export default class DiscussionScreen extends React.Component {
       <Grid>
           <Grid className='App-discussion' style={{ background: 'white', color: 'black', padding: 20}}>
             <Row className='discussion-card' style={{ flex: 2, padding: 10, marginRight: 5 }}>
-              <Col>
+              <Col mdPush={3} md={6}>
                 <div className='discussion-params' style={{ padding: 30 }}>
-                    <h3> Should we fork Ethereuem? </h3>
+                    <img src="/images/ethereum.png" alt="ethereum" style={{ height: 50, width: 50 }} />
+                    <h3> Should we fork Ethereum? </h3>
+                    <i style={{ color: '#172090'}}> #Resource Allocation </i>
                     <h4> Oct 5, 2018 </h4>
                     <p> This document proposes to restore the contract code of the `WalletLibrary` contract at `0x863DF6BFa4469f3ead0bE8f9F2AAE51c91A907b4` with a patched version. The contract was accidentally self-destructed and renders a significant amount of Ether inaccessible. </p>
 
@@ -212,24 +191,35 @@ export default class DiscussionScreen extends React.Component {
                 </div>
                 <div className='discussion-tags' style={{ maxWidth: `100%`, display: 'flex', justifyContent: 'center' }}>
                   <Badge style={{ padding: 15, marginRight: 5, display: 'flex' }}>
-                    <FA name="rocket" />
+                    <FA name="ethereum" />
                     <p> Eth Foundation </p>
                   </Badge>
                   <Badge style={{ padding: 15, marginRight: 5, display: 'flex' }}>
-                    <FA name="rocket" />
+                    <FA name="calendar" />
                     <p> 8/10/2018 13:00 </p>
                   </Badge>
                   <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}>
-                    <FA name="rocket" />
-                    <p>100 tokens spent </p>
-                  </Badge>
-                  <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}>
-                    <FA name="rocket" />
-                    <p>Voting app </p>
+                    <FA name="angle-up" />
+                    <p>Min. Threshold: 100</p>
                   </Badge>
                 </div>
               </Col>
-              <Col className='user-submission' style={{ flex: 1, padding: 40, margin: 30 }}>
+            </Row>
+            <Row style={{ padding: 30 }}>
+              <Col mdPush={3} md={6}>
+                <ProgressBar now={40} />
+              </Col>
+            </Row>
+            <Row>
+              <Col mdPush={3} md={6}>
+                <button style={{ padding: 15, marginTop: 5, borderRadius: 7, color: 'white', display: 'flex', backgroundColor: this.state.thresholdReached ? '#61dafb' : '#172090', disabled: !this.state.thresholdReached }}>
+                  <FA name="hand-paper" />
+                  <p>Voting app</p>
+                </button>
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 30 }}>
+              <Col mdPush={3} md={6} className='user-submission'>
                 <form className='user-input'>
                   <FormGroup
                     controlId="formBasicText"
@@ -264,26 +254,14 @@ export default class DiscussionScreen extends React.Component {
                     <HelpBlock>Validation is based on string length.</HelpBlock>
                   </FormGroup>
                 </form>
-              <Col style={{ padding: 40, margin: 30 }}>
-                <h4>Drag handle to your degree of confidence</h4>
-                <div style={{ display: 'flex' }}>
-                  <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}> No </Badge>
-                  <Range min={0} max={100} defaultValue={[50]} tipFormatter={value => `${value}%`} onChange={value => this.handleChangeRange} />
-                  <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}> Yes </Badge>
-                </div>
-              </Col>
-                <button
-                  className='user-submit'
-                  style={{
-                    width: 230.1,
-                    height: 59.8,
-                    borderRadius: 7,
-                    backgroundColor: this.state.bloomAuthenticated ? '#4a6dff' : '#cfd8ed',
-                    color: 'white',
-                    boxShadow: `0 3 6 0 '#cfd8ed'`
-                  }}
-                  disabled = { !this.state.bloomAuthenticated }
-                  onClick={this.handleSubmit}> Submit </button>
+                <Col>
+                  <h4>Drag handle to your degree of confidence</h4>
+                  <div style={{ display: 'flex' }}>
+                    <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}> No </Badge>
+                    <Range min={0} max={100} defaultValue={[50]} tipFormatter={value => `${value}%`} onChange={value => this.handleChangeRange} />
+                    <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}> Yes </Badge>
+                  </div>
+                </Col>
                   <button
                     className='bloom-authenticate'
                     style = {{
@@ -296,6 +274,18 @@ export default class DiscussionScreen extends React.Component {
                       boxShadow: `0 3 6 0 '#cfd8ed'`
                     }}
                     onClick={this.handleBloomAuthenticate}> <FA name="rocket" />Authenticate with Bloom </button>
+                    <button
+                      className='user-submit'
+                      style={{
+                        width: 230.1,
+                        height: 59.8,
+                        borderRadius: 7,
+                        backgroundColor: this.state.bloomAuthenticated ? '#4a6dff' : '#cfd8ed',
+                        color: 'white',
+                        boxShadow: `0 3 6 0 '#cfd8ed'`
+                      }}
+                      disabled = { !this.state.bloomAuthenticated }
+                      onClick={this.handleSubmit}> Submit </button>
               </Col>
             </Row>
           </Grid>
@@ -330,7 +320,10 @@ export default class DiscussionScreen extends React.Component {
             </Row>
           </Grid>
           {
-            this.renderLoadingModal() && this.renderBloomAuthModal()
+            this.renderLoadingModal()
+          }
+          {
+            this.renderBloomAuthModal()
           }
           {
             this.state.showLoadingModal && this.state.loadingProgress < 100

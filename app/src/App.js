@@ -2,74 +2,24 @@ import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 
-import GovernanceScreen from './screens/GovernanceScreen';
+import HomeScreen from './screens/HomeScreen';
 import DiscussionScreen from './screens/DiscussionScreen';
-import VotingScreen from './screens/VotingScreen';
 
-import EmbarkJS from 'Embark/EmbarkJS';
+import { Switch, Route, Link } from 'react-router-dom';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleSelect = this.handleSelect.bind(this);
-
-    this.state = {
-      error: null,
-      activeKey: 1,
-      whisperEnabled: false,
-      storageEnabled: false,
-      blockchainEnabled: false
-    };
-  }
-
-  componentDidMount() {
-    EmbarkJS.onReady((err) => {
-      this.setState({blockchainEnabled: true});
-      if (err) {
-        // If err is not null then it means something went wrong connecting to ethereum
-        // you can use this to ask the user to enable metamask for e.g
-        return this.setState({error: err.message || err});
-      }
-
-      EmbarkJS.Messages.Providers.whisper.getWhisperVersion((err, _version) => {
-        if (err) {
-          return console.log(err);
-        }
-        this.setState({whisperEnabled: true});
-      });
-
-      EmbarkJS.Storage.isAvailable().then((result) => {
-        this.setState({storageEnabled: result});
-      }).catch(() => {
-        this.setState({storageEnabled: false});
-      });
-    });
-  }
-
-  _renderStatus(title, available) {
-    let className = available ? 'pull-right status-online' : 'pull-right status-offline';
-    return (
-      <React.Fragment>
-        {title}
-        <span className={className}></span>
-      </React.Fragment>
-    );
-  }
-
-  handleSelect(key) {
-    this.setState({ activeKey: key });
-  }
-
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Ethereum Improvement Proposal #999</h1>
+          <Link to="/"> Home </Link>
+          <Link to="/discussion"> Discussion </Link>
         </header>
-
         <div className="App-body">
-          <DiscussionScreen />
+          <Switch>
+            <Route exact path='/' component={HomeScreen} />
+            <Route path='/discussion' component={DiscussionScreen} />
+          </Switch>
         </div>
       </div>
     );
