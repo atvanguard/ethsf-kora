@@ -11,5 +11,8 @@
   "devDependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.26.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "morgan": "^1.9.1",
+    "path": "^0.12.7"
+  }
 }
