@@ -1,9 +1,11 @@
+import EmbarkJS from 'Embark/EmbarkJS';
 import Governance from 'Embark/contracts/Governance';
+import web3 from 'web3';
 
 class Web3Util {
   async getAccount() {
     const accounts = await web3.eth.getAccounts();
-    return accounts[0];  
+    return accounts[0];
   }
 
   /*

@@ -1,4 +1,5 @@
 import React from 'react';
+import EmbarkJS from 'Embark/EmbarkJS';
 import { Badge, Button, FormGroup, Modal, ProgressBar, Popover, OverlayTrigger, ControlLabel, FormControl, HelpBlock, Grid, Row, Col } from 'react-bootstrap';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
@@ -129,6 +130,30 @@ export default class DiscussionScreen extends React.Component {
       return {
         loadingProgress: state.loadingProgress + 14
       }
+    });
+  }
+
+  componentDidMount() {
+    EmbarkJS.onReady((err) => {
+      this.setState({blockchainEnabled: true});
+      if (err) {
+        // If err is not null then it means something went wrong connecting to ethereum
+        // you can use this to ask the user to enable metamask for e.g
+        return this.setState({error: err.message || err});
+      }
+
+      EmbarkJS.Messages.Providers.whisper.getWhisperVersion((err, _version) => {
+        if (err) {
+          return console.log(err);
+        }
+        this.setState({whisperEnabled: true});
+      });
+
+      EmbarkJS.Storage.isAvailable().then((result) => {
+        this.setState({storageEnabled: result});
+      }).catch(() => {
+        this.setState({storageEnabled: false});
+      });
     });
   }
 

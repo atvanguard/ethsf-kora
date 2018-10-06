@@ -5,9 +5,14 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { HashRouter } from 'react-router-dom';
 
+import EmbarkJS from 'Embark/EmbarkJS';
+import web3Util from './utils/Web3Util';
+
 ReactDOM.render(
   <HashRouter>
-    <App />
+    <App
+      web3Util={web3Util}
+    />
   </HashRouter>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
