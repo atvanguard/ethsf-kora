@@ -8,12 +8,8 @@
   "author": "",
   "license": "ISC",
   "homepage": "",
-  "devDependencies": {
-    "babel-plugin-transform-object-rest-spread": "^6.26.0"
-  },
   "dependencies": {
     "embark": "^3.2.2",
-    "morgan": "^1.9.1",
     "path": "^0.12.7"
   }
 }
