@@ -6,5 +6,21 @@
         "address": "0xAdC6F258a53985A005e59ACad63BeE73856d34a9"
       }
     }
+  },
+  "0x03a9701472ef769c142f21ce68a8db1e1645ca6f6ec08e1aa3c0eddc8cab0d3e": {
+    "contracts": {
+      "0x7f801c9f1c681d273afbf6e207eba12dde4cec00941dfe625406a7888972ae93": {
+        "name": "Governance",
+        "address": "0x4afc98e1571070e35C04f3b39c2D206A31D96882"
+      }
+    }
+  },
+  "0xdd64ed31d5a93b052dbe1a2be874f394582f56898809c2074caccc158ea9d0ec": {
+    "contracts": {
+      "0x7f801c9f1c681d273afbf6e207eba12dde4cec00941dfe625406a7888972ae93": {
+        "name": "Governance",
+        "address": "0xcd42CD32e8381374c4b1E209625aC42d902a4498"
+      }
+    }
   }
 }

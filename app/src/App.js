@@ -6,19 +6,59 @@ import GovernanceScreen from './screens/GovernanceScreen';
 import DiscussionScreen from './screens/DiscussionScreen';
 import VotingScreen from './screens/VotingScreen';
 
+import EmbarkJS from 'Embark/EmbarkJS';
+
 class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      screen: 'Governance'
-    }
+    this.handleSelect = this.handleSelect.bind(this);
 
-    this.discussionScreen = this.discussionScreen.bind(this);
+    this.state = {
+      error: null,
+      activeKey: 1,
+      whisperEnabled: false,
+      storageEnabled: false,
+      blockchainEnabled: false
+    };
   }
 
-  discussionScreen() {
-    this.setState({ screen: 'Discussion' });
+  componentDidMount() {
+    EmbarkJS.onReady((err) => {
+      this.setState({blockchainEnabled: true});
+      if (err) {
+        // If err is not null then it means something went wrong connecting to ethereum
+        // you can use this to ask the user to enable metamask for e.g
+        return this.setState({error: err.message || err});
+      }
+
+      EmbarkJS.Messages.Providers.whisper.getWhisperVersion((err, _version) => {
+        if (err) {
+          return console.log(err);
+        }
+        this.setState({whisperEnabled: true});
+      });
+
+      EmbarkJS.Storage.isAvailable().then((result) => {
+        this.setState({storageEnabled: result});
+      }).catch(() => {
+        this.setState({storageEnabled: false});
+      });
+    });
+  }
+
+  _renderStatus(title, available) {
+    let className = available ? 'pull-right status-online' : 'pull-right status-offline';
+    return (
+      <React.Fragment>
+        {title}
+        <span className={className}></span>
+      </React.Fragment>
+    );
+  }
+
+  handleSelect(key) {
+    this.setState({ activeKey: key });
   }
 
   render() {
