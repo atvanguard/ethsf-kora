@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import './App.css';
 
 import GovernanceScreen from './screens/GovernanceScreen';
+import DiscussionScreen from './screens/DiscussionScreen';
+import VotingScreen from './screens/VotingScreen';
 
 class App extends Component {
   constructor(props) {
@@ -11,6 +13,12 @@ class App extends Component {
     this.state = {
       screen: 'Governance'
     }
+
+    this.discussionScreen = this.discussionScreen.bind(this);
+  }
+
+  discussionScreen() {
+    this.setState({ screen: 'Discussion' });
   }
 
   render() {
@@ -21,7 +29,7 @@ class App extends Component {
         </header>
 
         <div className="App-body">
-          <GovernanceScreen />
+          <GovernanceScreen renderDiscussionScreen = {this.discussionScreen}/>
         </div>
       </div>
     );
@@ -29,6 +37,7 @@ class App extends Component {
 }
 
 export default App;
+
 
 // {
 //   switch (this.state.screen) {
