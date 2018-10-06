@@ -1,6 +1,31 @@
 import React from 'react';
 import { Badge, Button, FormGroup, ControlLabel, FormControl, HelpBlock, Grid, Row, Col } from 'react-bootstrap';
+import 'rc-slider/assets/index.css';
+import 'rc-tooltip/assets/bootstrap.css';
+import Tooltip from 'rc-tooltip';
+const Slider = require('rc-slider');
+const createSliderWithTooltip = Slider.createSliderWithTooltip;
+const Range = createSliderWithTooltip(Slider.Range);
+const Handle = Slider.Handle;
+
 var FA = require('react-fontawesome');
+
+const handle = (props) => {
+  const { value, dragging, index, ...restProps } = props;
+  return (
+    <Tooltip
+      prefixCls="rc-slider-tooltip"
+      overlay={value}
+      visible={dragging}
+      placement="top"
+      key={index}
+    >
+      <Handle value={value} {...restProps} />
+    </Tooltip>
+  );
+};
+
+const wrapperStyle = { width: 400, margin: 50 };
 
 export default class DiscussionScreen extends React.Component {
   constructor(props, context) {
@@ -51,10 +76,12 @@ export default class DiscussionScreen extends React.Component {
           <Grid className='App-discussion' style={{ background: 'white', color: 'black', padding: 20}}>
             <Row className='discussion-card' style={{ flex: 2, padding: 10, marginRight: 5 }}>
               <Col>
-                <div className='discussion-params' style={{ padding: 20, marginBottom: 20 }}>
+                <div className='discussion-params' style={{ padding: 30 }}>
                     <h3> Should we fork Ethereuem? </h3>
                     <h4> Oct 5, 2018 </h4>
                     <p> This document proposes to restore the contract code of the `WalletLibrary` contract at `0x863DF6BFa4469f3ead0bE8f9F2AAE51c91A907b4` with a patched version. The contract was accidentally self-destructed and renders a significant amount of Ether inaccessible. </p>
+
+                    <a href="https://ethereum-magicians.org/t/eip-999-restore-contract-code-at-0x863df6bfa4/130"> View Full EIP Document </a>
                 </div>
                 <div className='discussion-tags' style={{ maxWidth: `100%`, display: 'flex', justifyContent: 'center' }}>
                   <Badge style={{ padding: 15, marginRight: 5, display: 'flex' }}>
@@ -75,7 +102,7 @@ export default class DiscussionScreen extends React.Component {
                   </Badge>
                 </div>
               </Col>
-              <Col className='user-submission' style={{ flex: 1, padding: 20 }}>
+              <Col className='user-submission' style={{ flex: 1, padding: 40, margin: 30 }}>
                 <form className='user-input'>
                   <FormGroup
                     controlId="formBasicText"
@@ -110,6 +137,14 @@ export default class DiscussionScreen extends React.Component {
                     <HelpBlock>Validation is based on string length.</HelpBlock>
                   </FormGroup>
                 </form>
+              <Col style={{ padding: 40, margin: 30 }}>
+                <h4>Drag handle to your degree of confidence</h4>
+                <div style={{ display: 'flex' }}>
+                  <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}> Yes </Badge>
+                  <Range min={0} max={100} defaultValue={[10]} tipFormatter={value => `${value}%`} />
+                  <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}> No </Badge>
+                </div>
+              </Col>
                 <button className='user-submit' style={{
                   width: 230.1,
                   height: 59.8,
