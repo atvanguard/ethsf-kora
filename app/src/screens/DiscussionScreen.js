@@ -1,5 +1,5 @@
 import React from 'react';
-import { Badge, Button, FormGroup, ControlLabel, FormControl, HelpBlock, Grid, Row, Col } from 'react-bootstrap';
+import { Badge, Button, FormGroup, Modal, ProgressBar, Popover, OverlayTrigger, ControlLabel, FormControl, HelpBlock, Grid, Row, Col } from 'react-bootstrap';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
 import Tooltip from 'rc-tooltip';
@@ -31,17 +31,17 @@ export default class DiscussionScreen extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    this.handleChange = this.handleChange.bind(this);
-
     this.state = {
       value: '',
+      showLoadingModal: false,
+      loadingProgress: 0,
       comments: [
         {
           id: 1,
           text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
           date: Date.now(),
           user: {
-            name: 'Andrew',
+            name: 'Gavin',
             avatar: 'https://cdn0.iconfinder.com/data/icons/user-pictures/100/matureman1-512.png'
           }
         },
@@ -50,12 +50,45 @@ export default class DiscussionScreen extends React.Component {
           text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
           date: Date.now(),
           user: {
-            name: 'Bob',
+            name: 'Vitalik',
+            avatar: 'https://bestshelvingunits.com/wp-content/uploads/2016/02/avatarnew.png'
+          }
+        },
+        {
+          id: 3,
+          text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+          date: Date.now(),
+          user: {
+            name: 'Jutta',
+            avatar: 'https://bestshelvingunits.com/wp-content/uploads/2016/02/avatarnew.png'
+          }
+        },
+        {
+          id: 4,
+          text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+          date: Date.now(),
+          user: {
+            name: 'Vlad',
+            avatar: 'https://bestshelvingunits.com/wp-content/uploads/2016/02/avatarnew.png'
+          }
+        },
+        {
+          id: 5,
+          text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+          date: Date.now(),
+          user: {
+            name: 'Bjorn',
             avatar: 'https://bestshelvingunits.com/wp-content/uploads/2016/02/avatarnew.png'
           }
         }
       ]
     };
+
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.progress = this.progress.bind(this);
   }
 
   getValidationState() {
@@ -68,6 +101,50 @@ export default class DiscussionScreen extends React.Component {
 
   handleChange(e) {
     this.setState({ value: e.target.value });
+  }
+
+  handleClose() {
+    this.setState({ showLoadingModal: false });
+  }
+
+  handleShow() {
+    this.setState({ showLoadingModal: true });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+
+    // do some loading animation stuff
+    this.handleShow();
+    // call contract functions via web3
+  }
+
+  progress() {
+    if (this.state.loadingProgress >= 100) {
+      this.handleClose();
+    }
+    this.setState((state) => {
+      return {
+        loadingProgress: state.loadingProgress + 14
+      }
+    });
+  }
+
+  renderLoadingModal() {
+    return (
+      <Modal show={this.state.showLoadingModal} onHide={this.handleClose}>
+        <Modal.Body>
+          <img src="/images/thinking.gif" alt='loading...' style={{ maxHeight:'100%', maxWidth: '100%' }}/>
+        </Modal.Body>
+        <Modal.Footer> Good things come to those who wait...</Modal.Footer>
+        <ProgressBar
+          bsStyle="info"
+          now={
+            this.state.loadingProgress
+          }
+        />
+      </Modal>
+    );
   }
 
   render() {
@@ -140,9 +217,9 @@ export default class DiscussionScreen extends React.Component {
               <Col style={{ padding: 40, margin: 30 }}>
                 <h4>Drag handle to your degree of confidence</h4>
                 <div style={{ display: 'flex' }}>
-                  <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}> Yes </Badge>
-                  <Range min={0} max={100} defaultValue={[10]} tipFormatter={value => `${value}%`} />
                   <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}> No </Badge>
+                  <Range min={0} max={100} defaultValue={[50]} tipFormatter={value => `${value}%`} />
+                  <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}> Yes </Badge>
                 </div>
               </Col>
                 <button className='user-submit' style={{
@@ -152,7 +229,8 @@ export default class DiscussionScreen extends React.Component {
                   backgroundColor: '#4a6dff',
                   color: 'white',
                   boxShadow: `0 3 6 0 '#cfd8ed'`
-                }}> Submit </button>
+                }}
+                onClick={this.handleSubmit}> Submit </button>
               </Col>
             </Row>
           </Grid>
@@ -180,6 +258,16 @@ export default class DiscussionScreen extends React.Component {
               </Col>
             </Row>
           </Grid>
+          {
+            this.renderLoadingModal()
+          }
+          {
+            this.state.showLoadingModal && this.state.loadingProgress < 100
+            ?
+            setInterval(() => this.progress(), 1300)
+            :
+            null
+          }
       </Grid>
     );
   }
