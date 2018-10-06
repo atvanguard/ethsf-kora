@@ -3,27 +3,13 @@ import { Badge, Button, FormGroup, Modal, ProgressBar, Popover, OverlayTrigger, 
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
 import Tooltip from 'rc-tooltip';
+import { RequestQRCode, RequestData, Action } from '@bloomprotocol/share-kit'
 const Slider = require('rc-slider');
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
 const Handle = Slider.Handle;
 
 var FA = require('react-fontawesome');
-
-const handle = (props) => {
-  const { value, dragging, index, ...restProps } = props;
-  return (
-    <Tooltip
-      prefixCls="rc-slider-tooltip"
-      overlay={value}
-      visible={dragging}
-      placement="top"
-      key={index}
-    >
-      <Handle value={value} {...restProps} />
-    </Tooltip>
-  );
-};
 
 const wrapperStyle = { width: 400, margin: 50 };
 
@@ -32,8 +18,11 @@ export default class DiscussionScreen extends React.Component {
     super(props, context);
 
     this.state = {
+      bloomAuthenticated: false,
       value: '',
+      rangeValue: '',
       showLoadingModal: false,
+      showBloomAuthModal: false,
       loadingProgress: 0,
       comments: [
         {
@@ -88,6 +77,8 @@ export default class DiscussionScreen extends React.Component {
     this.handleClose = this.handleClose.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChangeRange = this.handleChangeRange.bind(this);
+    this.handleBloomAuthenticate = this.handleBloomAuthenticate.bind(this);
     this.progress = this.progress.bind(this);
   }
 
@@ -99,12 +90,17 @@ export default class DiscussionScreen extends React.Component {
     return null;
   }
 
+  handleBloomAuthenticate() {
+    // 1. show modal with Bloom Share Kit QR code
+    this.setState({ showBloomAuthModal: true });
+  }
+
   handleChange(e) {
     this.setState({ value: e.target.value });
   }
 
   handleClose() {
-    this.setState({ showLoadingModal: false });
+    this.setState({ showLoadingModal: false, showBloomAuthModal: false });
   }
 
   handleShow() {
@@ -113,10 +109,16 @@ export default class DiscussionScreen extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    this.handleShow(); // 1. do some loading animation stuff
+    // 2. call contract functions via web3
+  }
 
-    // do some loading animation stuff
-    this.handleShow();
-    // call contract functions via web3
+  handleChangeRange(value) {
+    console.log(value);
+
+    this.setState({
+      rangeValue: value
+    });
   }
 
   progress() {
@@ -128,6 +130,29 @@ export default class DiscussionScreen extends React.Component {
         loadingProgress: state.loadingProgress + 14
       }
     });
+  }
+
+  renderBloomAuthModal() {
+    const defaultData = {
+      action: Action.attestation,
+      token: 'a08714b92346a1bba4262ed575d23de3ff3e6b5480ad0e1c82c011bab0411fdf',
+      url: 'http://localhost:3000/api/bloomShareReceiveData',
+      org_logo_url: 'https://bloom.co/images/notif/bloom-logo.png',
+      org_name: 'MahDemocracy',
+      org_usage_policy_url: 'https://bloom.co/legal/terms',
+      org_privacy_policy_url: 'https://bloom.co/legal/privacy',
+      types: ['email'],
+    }
+
+    return (
+      <Modal show={this.state.showBloomAuthModal} onHide={this.handleClose}>
+      <Modal.Header closeButton> Authenticate with Bloom </Modal.Header>
+        <Modal.Body >
+          <RequestQRCode requestData={defaultData} size={400} />
+        </Modal.Body>
+        <Modal.Footer> We just want to make sure you are who you say you are, but we don't need to know who you are, if you zknow what we mean ;)</Modal.Footer>
+      </Modal>
+    );
   }
 
   renderLoadingModal() {
@@ -218,19 +243,34 @@ export default class DiscussionScreen extends React.Component {
                 <h4>Drag handle to your degree of confidence</h4>
                 <div style={{ display: 'flex' }}>
                   <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}> No </Badge>
-                  <Range min={0} max={100} defaultValue={[50]} tipFormatter={value => `${value}%`} />
+                  <Range min={0} max={100} defaultValue={[50]} tipFormatter={value => `${value}%`} onChange={value => this.handleChangeRange} />
                   <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}> Yes </Badge>
                 </div>
               </Col>
-                <button className='user-submit' style={{
-                  width: 230.1,
-                  height: 59.8,
-                  borderRadius: 7,
-                  backgroundColor: '#4a6dff',
-                  color: 'white',
-                  boxShadow: `0 3 6 0 '#cfd8ed'`
-                }}
-                onClick={this.handleSubmit}> Submit </button>
+                <button
+                  className='user-submit'
+                  style={{
+                    width: 230.1,
+                    height: 59.8,
+                    borderRadius: 7,
+                    backgroundColor: this.state.bloomAuthenticated ? '#4a6dff' : '#cfd8ed',
+                    color: 'white',
+                    boxShadow: `0 3 6 0 '#cfd8ed'`
+                  }}
+                  disabled = { !this.state.bloomAuthenticated }
+                  onClick={this.handleSubmit}> Submit </button>
+                  <button
+                    className='bloom-authenticate'
+                    style = {{
+                      display: this.state.bloomAuthenticated ? 'hidden' : 'inline',
+                      width: 230.1,
+                      height: 59.8,
+                      borderRadius: 7,
+                      backgroundColor: '#4a6dff',
+                      color: 'white',
+                      boxShadow: `0 3 6 0 '#cfd8ed'`
+                    }}
+                    onClick={this.handleBloomAuthenticate}> <FA name="rocket" />Authenticate with Bloom </button>
               </Col>
             </Row>
           </Grid>
@@ -259,7 +299,7 @@ export default class DiscussionScreen extends React.Component {
             </Row>
           </Grid>
           {
-            this.renderLoadingModal()
+            this.renderLoadingModal() && this.renderBloomAuthModal()
           }
           {
             this.state.showLoadingModal && this.state.loadingProgress < 100
