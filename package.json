@@ -11,5 +11,7 @@
   "devDependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.26.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@bloomprotocol/share-kit": "^1.1.1"
+  }
 }
