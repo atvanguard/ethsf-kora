@@ -121,6 +121,9 @@ export default class DiscussionScreen extends React.Component {
 
   progress() {
     if (this.state.loadingProgress >= 100) {
+      this.setState({
+        loadingProgress: 0
+      });
       this.handleClose();
     }
     this.setState((state) => {
