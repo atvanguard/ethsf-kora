@@ -12,7 +12,7 @@ contract Governance {
     mapping (address => string) opinions;
   }
 
-  uint256 counter;
+  uint256 public counter;
   uint256 constant deductTokens = 50;
   mapping(uint256 => Proposal) proposals;
 

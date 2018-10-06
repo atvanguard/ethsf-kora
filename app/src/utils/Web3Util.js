@@ -22,6 +22,11 @@ class Web3Util {
     console.log('createProposalTx', createProposalTx);
   }
 
+  async getCounter() {
+    const counter = await Governance.methods.counter().call();
+    return counter;
+  }
+
   /*
   @param from - account from which proposal was created
   @param id - proposal id

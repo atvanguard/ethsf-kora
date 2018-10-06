@@ -22,5 +22,33 @@
         "address": "0xcd42CD32e8381374c4b1E209625aC42d902a4498"
       }
     }
+  },
+  "0x04ca902be698e2402196ff4aa216737ce102391f077c13406a80bdcf60bece43": {
+    "contracts": {
+      "0x2b931afb577cc7f4d9ee287b3efe812631900c2f70ffde94966baf68d5eb177a": {
+        "name": "Governance",
+        "address": "0x9be7BBc58b0b425180Df23D3128adC73d2065dD6"
+      },
+      "0x7f801c9f1c681d273afbf6e207eba12dde4cec00941dfe625406a7888972ae93": {
+        "name": "Governance",
+        "address": "0x589E8c58f87EB25486d3D4B48c5D9df67fAb1d9b"
+      }
+    }
+  },
+  "0xd9e82075cae5b071aacb1fbb2edbf79fd4b73467e143b4bc92874957b3f6f498": {
+    "contracts": {
+      "0x7f801c9f1c681d273afbf6e207eba12dde4cec00941dfe625406a7888972ae93": {
+        "name": "Governance",
+        "address": "0xC65A60d7Db1401fB17221A2F4aBd2c2b1133344a"
+      }
+    }
+  },
+  "0x3763618b1ace448932f7d45a19b967a3622cb9b7d2377d502405a7a9968f9e3f": {
+    "contracts": {
+      "0x2fc7307c817d97296bc75c0ff9ab5f5a986009f6ee18f1d006473f8399c20b74": {
+        "name": "Governance",
+        "address": "0x3f1ae911dA5Dac4F933eF0476EBFAe96c7744373"
+      }
+    }
   }
 }

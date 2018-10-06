@@ -12,6 +12,7 @@
     "rc-tooltip": "^3.7.3",
     "react": "^16.5.2",
     "react-bootstrap": "^0.32.4",
+    "react-datetime-picker": "^1.6.1",
     "react-dom": "^16.5.2",
     "react-fontawesome": "^1.6.1",
     "react-hot-loader": "^4.3.11",
