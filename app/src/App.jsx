@@ -25,11 +25,11 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          Ethereum Improvement Proposal #999
+          <h1>Ethereum Improvement Proposal #999</h1>
         </header>
 
         <div className="App-body">
-          <GovernanceScreen renderDiscussionScreen = {this.discussionScreen}/>
+          <DiscussionScreen />
         </div>
       </div>
     );

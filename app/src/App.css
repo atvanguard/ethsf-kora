@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: #282c34;
+  background-color: #cfd8ed;
   min-height: 100vh;
 }
 
@@ -17,6 +17,7 @@
   padding-top: 25px;
   font-size: calc(10px + 2vmin);
   color: white;
+  background-color: #282c34;
 }
 
 .App-link {
