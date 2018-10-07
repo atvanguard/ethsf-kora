@@ -18,7 +18,7 @@ class App extends Component {
         <div className="App-body">
           <Switch>
             <Route exact path='/' component={HomeScreen} />
-            <Route path='/discussion' component={DiscussionScreen} />
+            <Route path='/discussion/:id' component={DiscussionScreen} />
           </Switch>
         </div>
       </div>

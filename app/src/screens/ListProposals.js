@@ -6,6 +6,7 @@ var FA = require('react-fontawesome');
 
 import EmbarkJS from 'Embark/EmbarkJS';
 import web3Util from '../utils/Web3Util';
+import { Switch, Route, Link } from 'react-router-dom';
 
 export default class Home extends React.Component {
 
@@ -56,10 +57,10 @@ export default class Home extends React.Component {
     console.log('counter', counter);
     const eips = []
     for(let i = 0; i < counter; i++) {
-      const proposal = await web3Util.readProposal(i);
-      console.log(proposal)
+      const {proposal, details} = await web3Util.readProposal(i);
+      console.log(proposal, details)
       eips.push({
-        title: proposal.details.title,
+        title: details.title,
         // description: proposal.details.description,
         authorAddress: proposal.owner,
         tokensSpent: proposal.minTokensSpent,
@@ -77,7 +78,7 @@ export default class Home extends React.Component {
     return (
       <Grid className="App-EIPS-list">
         {
-          this.state.eips.map(eip => {
+          this.state.eips.map((eip, id) => {
             return (
               <Grid style={{ background: 'white', borderRadius: 10, marginTop: 30, color: 'black' }}>
                 <Row style={{ boxShadow: `0 3 6 0 #cfd8ed` }}>
@@ -91,7 +92,8 @@ export default class Home extends React.Component {
                   <Badge style={{ display: 'flex', flex: 1, borderRadius: 7, height: 60, width: 140, backgroundColor: '#cfd8ed', marginLeft: 5 }}> <FA name="rocket" /> <h3>{eip.stakeholders[0]}</h3></Badge>
                   <Badge style={{ display: 'flex', flex: 1, borderRadius: 7, height: 60, width: 140, backgroundColor: '#cfd8ed', marginLeft: 5 }}> <FA name="rocket" /> <h3>{eip.dueDate}</h3></Badge>
                   <Badge style={{ display: 'flex', flex: 1, borderRadius: 7, height: 60, width: 140, backgroundColor: '#cfd8ed', marginLeft: 5 }}> <FA name="rocket" /> <h3>{eip.tokensSpent}</h3></Badge>
-                  <button style={{ display: 'flex', flex: 1, borderRadius: 7, height: 60, width: 140, backgroundColor: '#4a6dff', marginLeft: 5 }}> <FA name="rocket" /> <h3> View Discussion </h3></button>
+                  <Link to={'/discussion/'+id}>Discussion</Link>
+                  {/* <button style={{ display: 'flex', flex: 1, borderRadius: 7, height: 60, width: 140, backgroundColor: '#4a6dff', marginLeft: 5 }}> <FA name="rocket" /><Link to={`/discussion/:${id}`}>Discussion</Link></button> */}
                 </Row>
               </Grid>
             )

@@ -26,6 +26,17 @@ class Web3Util {
     return counter;
   }
 
+  async voiceOpinion(id, proposalState) {
+    const from = await this.getAccount();
+    const params = {from};
+    const dataHash = await this.saveText(JSON.stringify(proposalState));
+    const estimateGas = await Governance.methods.voiceOpinion(id, dataHash).estimateGas(params);
+    console.log('voiceOpinionTx - estimateGas', estimateGas);
+    params.gas = estimateGas + 500;
+    const voiceOpinionTx = await Governance.methods.voiceOpinion(id, dataHash).send(params);
+    console.log('voiceOpinionTx', voiceOpinionTx);
+  }
+
   /*
   @param from - account from which proposal was created
   @param id - proposal id
@@ -33,8 +44,8 @@ class Web3Util {
   async readProposal(id) {
     const proposal = await Governance.methods.readProposal(id).call();
     console.log(proposal)
-    proposal.details = await this.decodeIpfsHash(proposal.dataHash, true);
-    return proposal;
+    const details = await this.decodeIpfsHash(proposal.dataHash, true);
+    return {proposal, details};
   }
 
   /*
@@ -50,17 +61,6 @@ class Web3Util {
     params.gas = estimateGas + 500;
     const assignTokensTx = await Governance.methods.assignTokens(id, address, numTokens).estimateGas(params);
     console.log('assignTokensTx', assignTokensTx);
-  }
-
-  async voiceOpinion(id, details) {
-    const from = await this.getAccount();
-    const params = {from};
-    const dataHash = await this.saveText(JSON.stringify(details));
-    const estimateGas = await Governance.methods.voiceOpinion(id, dataHash).estimateGas(params);
-    console.log('voiceOpinion - estimateGas', estimateGas);
-    params.gas = estimateGas + 500;
-    const voiceOpinionTx = await Governance.methods.voiceOpinion(id, dataHash).send(params);
-    console.log('voiceOpinionTx', voiceOpinionTx);
   }
 
   async decodeIpfsHash(cid, jsonParse=false) {

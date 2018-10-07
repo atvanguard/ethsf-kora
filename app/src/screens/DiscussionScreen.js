@@ -11,17 +11,21 @@ const Slider = require('rc-slider');
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
 const Handle = Slider.Handle;
-
+import { Switch, Route, Link } from 'react-router-dom';
 var FA = require('react-fontawesome');
+
+import EmbarkJS from 'Embark/EmbarkJS';
+import web3Util from '../utils/Web3Util';
+import _ from 'lodash';
 
 export default class DiscussionScreen extends React.Component {
   constructor(props, context) {
     super(props, context);
-
+    console.log(props)
     this.state = {
       bloomAuthenticated: true,
       formInputValue: '',
-      rangeValue: '',
+      rangeValue: 50,
       showLoadingModal: false,
       showBloomAuthModal: false,
       thresholdReached: false,
@@ -84,6 +88,63 @@ export default class DiscussionScreen extends React.Component {
     this.progress = this.progress.bind(this);
   }
 
+  componentDidMount() { 
+    EmbarkJS.onReady(async () => {
+      this.buildDiscussionPage(this.props.match.params.id);
+    })
+  }
+
+  async buildDiscussionPage(id) {
+    const {proposal, details} = await web3Util.readProposal(parseInt(id,0));
+    let {title, comments} = details;
+    let option1Favorability = 0;
+    comments = comments || []
+    comments.forEach((comment, i) => {
+      comment.id = i;
+      option1Favorability += comment.option1Favorability;
+    });
+    details.comments = comments;
+    console.log('comments', comments)
+    // const numComments = comments.length;
+    this.setState({
+      details,
+      title,
+      option1Favorability: option1Favorability > 0 ? option1Favorability / (100 * comments.length) : null, // defaults to 1/3
+    })
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    this.handleShow();
+    // 1. do some loading animation stuff
+    // 2. call contract functions via web3
+    const proposalState = this.buildProposalState();
+    console.log('proposalState', proposalState)
+    web3Util.voiceOpinion(parseInt(this.props.match.params.id), proposalState);
+  }
+
+  buildProposalState() {
+    let proposal = this.state.details || {};
+    console.log('proposal', proposal)
+    // append comment and user signalled allocation
+    console.log(this.state.formInputValue, this.state.rangeValue)
+    if (this.state.formInputValue && this.state.rangeValue) {
+      if(!proposal.comments) proposal.comments = [];
+      // console.log('proposal', proposal)
+      proposal.comments.push({
+        text: this.state.formInputValue,
+        date: moment().format("MMM Do YY"),
+        option1Favorability: this.state.rangeValue,
+        user: {
+          name: 'Bjorn',
+          email: 'comes from bloom auth',
+          avatar: 'https://bestshelvingunits.com/wp-content/uploads/2016/02/avatarnew.png'
+        }
+      });
+    }
+    return proposal;
+  }
+
   getValidationState() {
     const length = this.state.formInputValue.length;
     if (length > 10) return 'success';
@@ -109,17 +170,11 @@ export default class DiscussionScreen extends React.Component {
     this.setState({ showLoadingModal: true });
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    this.handleShow(); // 1. do some loading animation stuff
-    // 2. call contract functions via web3
-  }
-
   handleChangeRange(value) {
     console.log(value);
 
     this.setState({
-      rangeValue: value
+      rangeValue: value[0]
     });
   }
 
@@ -175,6 +230,7 @@ export default class DiscussionScreen extends React.Component {
   }
 
   render() {
+    const option1Favorability = this.state.option1Favorability == null ? 1/3 : this.state.option1Favorability;
     return (
       <Grid>
           <Grid className='App-discussion' style={{ background: 'white', color: 'black', padding: 20}}>
@@ -182,7 +238,7 @@ export default class DiscussionScreen extends React.Component {
               <Col mdPush={3} md={6}>
                 <div className='discussion-params' style={{ padding: 30 }}>
                     <img src="/images/ecf.png" alt="ethereum" style={{ height: 100, width: 200 }} />
-                    <h3> Grant Allocation Discussion </h3>
+                    <h3> {this.state.title || 'Grant Allocation Discussion'} </h3>
                     <i style={{ color: '#172090'}}> #ResourceAllocationTemplate </i>
                     <h4> October 2018 </h4>
                     <p> The aim of the Ethereum Community Fund (ECF) is to provide both funding and connectivity while shaping the strategic direction of the space towards mainstream adoption through the development of infrastructure and compelling end-user applications.
@@ -209,13 +265,13 @@ This discussion will engage our 8 founding members as stakeholders in the grant 
             <Row style={{ padding: 30 }}>
               <Col mdPush={3} md={3}>
                 <Label bsStyle="primary" style={{ padding: 5 }}> Option 1</Label>
-                <CircleGraph value={1/3} />
+                <CircleGraph value={option1Favorability} />
                 <p> Fourthstate is a Minimum Viable Plasma implementation by a group of students stemming from Blockchain at Berkeley, one of the most promising educational initiatives in the ecosystem </p>
                 <a href="https://github.com/fourthstate" alt="fourthstate"> https://github.com/fourthstate </a>
               </Col>
               <Col mdPush={3} md={3}>
                 <Label bsStyle="primary" style={{ padding: 5 }}> Option 2 </Label>
-                <CircleGraph value={2/3}  />
+                <CircleGraph value={1 - option1Favorability}  />
                 <p> Web3j by Conor Svensson: a lightweight, highly modular, reactive, type-safe Java and Android library for Ethereum Network smart contracts and client integration. Asking for $96,000 </p>
                 <a href="https://github.com/web3j/web3j" alt="web3"> https://github.com/web3j/web3j </a>
               </Col>
@@ -263,7 +319,7 @@ This discussion will engage our 8 founding members as stakeholders in the grant 
                   <h4>Drag handle to your desired allocation ratio:</h4>
                   <div style={{ display: 'flex' }}>
                     <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}> Option 1 </Badge>
-                    <Range min={0} max={100} defaultValue={[50]} tipFormatter={value => `${value}%`} onChange={value => this.handleChangeRange} />
+                    <Range min={0} max={100} value={[this.state.rangeValue]} defaultValue={[50]} tipFormatter={value => `${value}%`} onChange={this.handleChangeRange} />
                     <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}> Option 2 </Badge>
                   </div>
                 </Col>
@@ -298,7 +354,7 @@ This discussion will engage our 8 founding members as stakeholders in the grant 
               <Tab eventKey={1} title="For">
                 <Col md={4} className='comments-against'>
                   {
-                    this.state.comments.map(comment => {
+                    (_.get(this, 'state.details.comments', [])).map(comment => {
                       return (
                         <Grid style={{ background: 'white', color: 'black', borderRadius: 10, marginTop: 30 }}>
                           <Row style={{ boxShadow: `0 3 6 0 #cfd8ed` }}>

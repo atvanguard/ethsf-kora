@@ -112,6 +112,14 @@
       "0x0c2d1f86206e7817c85a561372e8f78e64fcf2b7b97d68f8c3e9bba73339bf54": {
         "name": "Governance",
         "address": "0xc8F466fFeF9E9788fb363c2F4fBDdF2cAe477805"
+      },
+      "0x2d0044ecc4019246bd937979e603dcaa92200f41de4d4cf687f005d722a18b16": {
+        "name": "Governance",
+        "address": "0x6F4e99522F4eB37e0B73D0C0373147893EF12fD5"
+      },
+      "0x272666dcc05315198c693dc262cf8440a2ed3122d9e32c31f6c88f198e7b6832": {
+        "name": "Governance",
+        "address": "0x56D4563E85477AC8Aa6a3b980b831DDb18a826ec"
       }
     }
   }

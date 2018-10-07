@@ -13,7 +13,8 @@ contract Governance {
   }
 
   uint256 public counter;
-  uint256 constant deductTokens = 50;
+  // uint256 constant deductTokens = 50;
+  uint256 constant deductTokens = 0;
   mapping(uint256 => Proposal) proposals;
 
   modifier onlyOwner(uint256 id, address sender) {
@@ -55,13 +56,14 @@ contract Governance {
     proposal.balances[_address] = tokens;
   }
   
-  function voiceOpinion(uint256 id, string dataHash)
+  function voiceOpinion(uint256 id, string newDataHash)
   public
   validProposal(id) hasBalance(id, msg.sender, deductTokens) {
     Proposal storage proposal = proposals[id];
     proposal.balances[msg.sender] -= deductTokens; // deduct a fixed amount based on the action
     proposal.tokensSpent += deductTokens;
-    proposal.opinions[msg.sender] = dataHash;
+    proposal.dataHash = newDataHash;
+    // proposal.opinions[msg.sender] = dataHash;
     // if (proposal.tokensSpent >= proposal.minTokensSpent) forward to voting app
   }
 }
