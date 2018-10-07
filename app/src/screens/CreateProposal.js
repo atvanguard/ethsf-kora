@@ -77,7 +77,7 @@ export default class CreateProposal extends React.Component {
     return (
       <div class="card">
       <div class="card-body">
-        <h1 class="card-title app-header">Create new proposal</h1>
+        <h1 class="card-title app-header">Create new discussion</h1>
         {
           this.state.backendError !== '' &&
           <Alert bsStyle="danger">{this.state.backendError}</Alert>
