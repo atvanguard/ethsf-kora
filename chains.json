@@ -170,5 +170,13 @@
         "address": "0x5c702Fbbcfb8EF5cc70c4E4341AA437ef9D55281"
       }
     }
+  },
+  "0x40eba691a6742d2ffacef70f890034c807ddeb1192f1a57d406bab525a60edf4": {
+    "contracts": {
+      "0xcb199c48d44f4f356a7cf7577ff119603499778afb6fbf60dc9c14470a34c6a2": {
+        "name": "Governance",
+        "address": "0x5c702Fbbcfb8EF5cc70c4E4341AA437ef9D55281"
+      }
+    }
   }
 }

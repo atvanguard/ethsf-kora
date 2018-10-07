@@ -13,7 +13,6 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <Link to="/" style={{ color: 'white' }}> Home </Link>
-          <Link to="/discussion" style={{ color: 'white' }}> Discussion </Link>
         </header>
         <div className="App-body">
           <Switch>

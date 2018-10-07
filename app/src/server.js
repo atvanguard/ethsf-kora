@@ -118,7 +118,7 @@ var Governance = new web3.eth.Contract([
     "stateMutability": "nonpayable",
     "type": "function"
   }
-], '0x317113D2593e3efF1FfAE0ba2fF7A61861Df7ae5', {
+], '0x5c702Fbbcfb8EF5cc70c4E4341AA437ef9D55281', {
   from: '0xb4124ceb3451635dacedd11767f004d8a28c6ee7', // default from address
   gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
 });

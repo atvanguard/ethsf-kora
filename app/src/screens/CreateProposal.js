@@ -1,8 +1,20 @@
 import React from 'react'
 import DateTimePicker from 'react-datetime-picker';
-import { Alert, Form, FormGroup, FormControl, Button } from 'react-bootstrap';
+import { Alert, Form, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 
 import web3Util from '../utils/Web3Util';
+
+const labelStyle = {
+  fontFamily: 'SFProText',
+  fontSize: 24,
+  fontWeight: 500,
+  fontStyle: 'normal',
+  fontStretch: 'normal',
+  lineHeight: 1.37,
+  letterSpacing: -0.9,
+  textAlign: 'left',
+  color: '#291a41'
+}
 
 export default class CreateProposal extends React.Component {
   constructor() {
@@ -38,7 +50,8 @@ export default class CreateProposal extends React.Component {
       const endsAt = Date.parse(this.state.endsAt) / 1000;
       const details = {
         title: this.state.hackathonName,
-        description: this.state.description
+        description: this.state.description,
+        email: 'yj@parity.io'
       }
       await web3Util.newProposal(details, this.state.tokens /* minTokens */);
     } catch (err) {
@@ -64,52 +77,76 @@ export default class CreateProposal extends React.Component {
     return (
       <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Create new proposal</h5>
+        <h1 class="card-title app-header">Create new proposal</h1>
         {
           this.state.backendError !== '' &&
           <Alert bsStyle="danger">{this.state.backendError}</Alert>
         }
+        <p class="lead">Associated Email: yj@parity.io</p>
+        <i>Automagically retreived email through Bloom</i>
         <form onSubmit={this.handleSubmit}>
-
-          <div class="form-group">
-            <label for="hackathonName">Question</label>
-            <input type="text" class="form-control" id="hackathonName"
-              placeholder="Enter Proposal question"
+          <FormGroup>
+            <ControlLabel
+              style={labelStyle}> Question </ControlLabel>
+            <FormControl
+              type="text"
               value={this.state.hackathonName}
-              onChange={(e) => this.handleChange(e, 'hackathonName')} />
-          </div>
-
-          <div class="form-group">
-            <label for="description">description</label>
-            <input type="text" class="form-control" id="description"
-              placeholder="Enter description"
+              placeholder="Enter Proposal question"
+              onChange={(e) => this.handleChange(e, 'hackathonName')}
+              style={{
+                width: `100%`,
+                height: 131.9,
+                borderRadius: 10,
+                border: `solid 2px #cfd8ed`
+              }}
+              id="hackathonName"
+            />
+            <ControlLabel
+              style={labelStyle}> Description </ControlLabel>
+            <FormControl
+              type="text"
               value={this.state.description}
-              onChange={(e) => this.handleChange(e, 'description')} />
-          </div>
-
-          <div class="form-group">
-            <label for="prizes">Min tokens spent</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="tokensHelp">To reach quoram measured by tokens spent</span>
+              placeholder="Enter a description of your motivations and intentions for raising this question"
+              onChange={(e) => this.handleChange(e, 'description')}
+              style={{
+                width: `100%`,
+                height: 131.9,
+                borderRadius: 10,
+                border: `solid 2px #cfd8ed`
+              }}
+              id="hackathonDescription"
+            />
+            <ControlLabel
+              style={labelStyle}> Min Token Threshold to Reach Quorum </ControlLabel>
+            <FormControl
+              type="text"
+              value={this.state.tokens}
+              placeholder="55"
+              onChange={(e) => this.handleChange(e, 'tokens')}
+              style={{
+                width: `100%`,
+                height: 131.9,
+                borderRadius: 10,
+                border: `solid 2px #cfd8ed`
+              }}
+              id="hackathonDescription"
+            />
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="endsAt">Ends at</label>
+                <div style={{"height": "35px"}}>
+                  <DateTimePicker
+                    onChange={(date) => this.handleCalChange('endsAt', date)}
+                    value={this.state.endsAt} />
+                </div>
               </div>
-              <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="tokensHelp"
-                placeholder="75" id="tokens"
-                value={this.state.tokens}
-                onChange={(e) => this.handleChange(e, 'tokens')} />
             </div>
-          </div>
 
-          <div class="form-row">
-            <div class="form-group col">
-              <label for="endsAt">Ends at</label>
-              <div style={{"height": "35px"}}>
-                <DateTimePicker
-                  onChange={(date) => this.handleCalChange('endsAt', date)}
-                  value={this.state.endsAt} />
-              </div>
-            </div>
-          </div>
+          </FormGroup>
+
+
+
+
 
           {/* <div class="form-group">
             <label>Upload other Hackathon details</label>

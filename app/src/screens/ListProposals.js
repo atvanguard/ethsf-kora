@@ -2,11 +2,11 @@ import React from 'react';
 import { Grid, Row, Col, Button, Badge } from 'react-bootstrap';
 import { RequestQRCode, RequestData, Action } from '@bloomprotocol/share-kit';
 import moment from 'moment';
-var FA = require('react-fontawesome');
 
 import EmbarkJS from 'Embark/EmbarkJS';
 import web3Util from '../utils/Web3Util';
 import { Switch, Route, Link } from 'react-router-dom';
+var FA = require('react-fontawesome');
 
 export default class Home extends React.Component {
 
@@ -46,7 +46,7 @@ export default class Home extends React.Component {
     }
   }
 
-  componentDidMount() { 
+  componentDidMount() {
     EmbarkJS.onReady(async () => {
       this.getProposals();
     })
@@ -61,13 +61,13 @@ export default class Home extends React.Component {
       console.log(proposal, details)
       eips.push({
         title: details.title,
-        // description: proposal.details.description,
+        description: details.description,
         authorAddress: proposal.owner,
         tokensSpent: proposal.minTokensSpent,
-        tags: ['Debate'],
-        date: Date.now(),
+        tags: ['Resource Allocation'],
+        date: moment().format("MMM Do YY"),
         stakeholders: ['Ethereum Foundation'],
-        dueDate: Date.now(),
+        dueDate: moment().format("MMM Do YY"),
       })
     }
     this.setState({eips})
@@ -80,20 +80,32 @@ export default class Home extends React.Component {
         {
           this.state.eips.map((eip, id) => {
             return (
-              <Grid style={{ background: 'white', borderRadius: 10, marginTop: 30, color: 'black' }}>
-                <Row style={{ boxShadow: `0 3 6 0 #cfd8ed` }}>
-                  <Col className="overview">
-                    <h1 style={{ padding: 10 }}>{eip.title}</h1>
-                    <h2 style={{ padding: 10 }}>{eip.authorAddress}</h2>
-                    <Badge style={{ flex: 1, borderRadius: 7, height: 60, width: 140, backgroundColor: '#cfd8ed', marginLeft: 5 }}> <FA name="rocket" /> <h2>{eip.tags[0]}</h2></Badge>
+              <Grid style={{ background: 'white', color: 'black', borderRadius: 10, marginTop: 30 }}>
+                <Row style={{ boxShadow: `0 3 6 0 #8E54E9` }}>
+                  <Col className="user" md={6} mdPush={3}>
+                    <img src='/images/ecf.png' alt="ecf" style={{ height: 60, width: 100 }}/>
+                    <Row>
+                      <h3 style={{ padding: 10 }}>{eip.title}</h3>
+                      <Badge style={{ borderRadius: 7, padding: 10, backgroundColor: '#8E54E9' }}>#{eip.tags[0]}</Badge>
+                    </Row>
+
+                    <Row>
+                        {eip.description}
+                    </Row>
                   </Col>
                 </Row>
-                <Row className="badges" style={{ display: 'flex', width: '100%', padding: 30, alignItems: 'flexEnd' }}>
-                  <Badge style={{ display: 'flex', flex: 1, borderRadius: 7, height: 60, width: 140, backgroundColor: '#cfd8ed', marginLeft: 5 }}> <FA name="rocket" /> <h3>{eip.stakeholders[0]}</h3></Badge>
-                  <Badge style={{ display: 'flex', flex: 1, borderRadius: 7, height: 60, width: 140, backgroundColor: '#cfd8ed', marginLeft: 5 }}> <FA name="rocket" /> <h3>{eip.dueDate}</h3></Badge>
-                  <Badge style={{ display: 'flex', flex: 1, borderRadius: 7, height: 60, width: 140, backgroundColor: '#cfd8ed', marginLeft: 5 }}> <FA name="rocket" /> <h3>{eip.tokensSpent}</h3></Badge>
-                  <Link to={'/discussion/'+id}>Discussion</Link>
-                  {/* <button style={{ display: 'flex', flex: 1, borderRadius: 7, height: 60, width: 140, backgroundColor: '#4a6dff', marginLeft: 5 }}> <FA name="rocket" /><Link to={`/discussion/:${id}`}>Discussion</Link></button> */}
+                <Row>
+                  <div style={{ padding: 30 }}> Submitted By: {eip.authorAddress} </div>
+                </Row>
+                <Row className="signaling-actions" style={{ display: 'flex', width: '100%', padding: 30, justifyContent: 'center', alignItems: 'flexEnd', color: 'white' }}>
+                  <Col md={5}>
+                    <Badge style={{ flex: 1, borderRadius: 7, margin: 5, padding: 10, backgroundColor: '#4a6dff' }}> <FA name="person" /> {eip.stakeholders[0]} </Badge>
+                    <Badge style={{ flex: 1, borderRadius: 7, margin: 5, padding: 10, backgroundColor: '#4a6dff' }}> <FA name="calendar" /> {eip.dueDate} </Badge>
+                    <Badge style={{ flex: 1, borderRadius: 7, margin: 5, padding: 10, backgroundColor: '#4a6dff' }}> <FA name="calendar" /> {eip.tokensSpent} </Badge>
+                  </Col>
+                  <Col mdPush={1} md={5}>
+                    <Link to={'/discussion/'+id}> View Discussion </Link>
+                  </Col>
                 </Row>
               </Grid>
             )

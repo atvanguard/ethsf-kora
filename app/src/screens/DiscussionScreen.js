@@ -2,6 +2,11 @@ import React from 'react';
 // import EmbarkJS from 'Embark/EmbarkJS';
 import { Badge, Button, Label, FormGroup, Tabs, Tab, Modal, ProgressBar, Popover, OverlayTrigger, ControlLabel, FormControl, HelpBlock, Grid, Row, Col } from 'react-bootstrap';
 import { CircleGraph } from '@aragon/ui';
+import EmbarkJS from 'Embark/EmbarkJS';
+import web3Util from '../utils/Web3Util';
+import { Switch, Route, Link } from 'react-router-dom';
+
+import _ from 'lodash';
 import moment from 'moment';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
@@ -11,12 +16,8 @@ const Slider = require('rc-slider');
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
 const Handle = Slider.Handle;
-import { Switch, Route, Link } from 'react-router-dom';
-var FA = require('react-fontawesome');
 
-import EmbarkJS from 'Embark/EmbarkJS';
-import web3Util from '../utils/Web3Util';
-import _ from 'lodash';
+var FA = require('react-fontawesome');
 
 export default class DiscussionScreen extends React.Component {
   constructor(props, context) {
@@ -31,7 +32,7 @@ export default class DiscussionScreen extends React.Component {
       thresholdReached: false,
       loadingProgress: 0,
       addressBalance: 0,
-      email: '',
+      email: 'yj@parity.io',
       comments: [
         {
           id: 1,
@@ -90,7 +91,7 @@ export default class DiscussionScreen extends React.Component {
     this.progress = this.progress.bind(this);
   }
 
-  componentDidMount() { 
+  componentDidMount() {
     EmbarkJS.onReady(async () => {
       this.buildDiscussionPage(this.props.match.params.id);
     })
@@ -209,7 +210,7 @@ export default class DiscussionScreen extends React.Component {
     return (
       <Modal show={this.state.showBloomAuthModal} onHide={this.handleClose}>
       <Modal.Header closeButton> Authenticate with Bloom </Modal.Header>
-        <Modal.Body >
+        <Modal.Body style={{ display: 'flex' }}>
           <RequestQRCode requestData={defaultData} size={400} />
         </Modal.Body>
         <Modal.Footer> We just want to make sure you are who you say you are, but we don't need to know who you are, if you zknow what we mean ;)</Modal.Footer>
@@ -238,7 +239,8 @@ export default class DiscussionScreen extends React.Component {
     const option1Favorability = this.state.option1Favorability == null ? 1/3 : this.state.option1Favorability;
     return (
       <div>
-      <p>Token balance: {this.state.addressBalance}, email: {this.state.email}</p>
+      <Badge style={{ backgroundColor: '#4a6dff'}}> <p>Token balance: {this.state.addressBalance} </p> </Badge>
+      <Badge style={{ backgroundColor: '#4a6dff'}}> <p>Email: yj@parity.io </p> </Badge>
       <Grid>
           <Grid className='App-discussion' style={{ background: 'white', color: 'black', padding: 20}}>
             <Row className='discussion-card' style={{ flex: 2, padding: 10, marginRight: 5 }}>
@@ -248,9 +250,6 @@ export default class DiscussionScreen extends React.Component {
                     <h3> {this.state.title || 'Grant Allocation Discussion'} </h3>
                     <i style={{ color: '#172090'}}> #ResourceAllocationTemplate </i>
                     <h4> October 2018 </h4>
-                    <p> The aim of the Ethereum Community Fund (ECF) is to provide both funding and connectivity while shaping the strategic direction of the space towards mainstream adoption through the development of infrastructure and compelling end-user applications.
-This discussion will engage our 8 founding members as stakeholders in the grant allocation decision-making process.</p>
-
                     <a href="https://ethereum-magicians.org/t/eip-999-restore-contract-code-at-0x863df6bfa4/130"> View Full EIP Document </a>
                 </div>
                 <div className='discussion-tags' style={{ maxWidth: `100%`, display: 'flex', justifyContent: 'center' }}>
@@ -420,7 +419,7 @@ This discussion will engage our 8 founding members as stakeholders in the grant 
           {
             this.state.showLoadingModal && this.state.loadingProgress < 100
             ?
-            setInterval(() => this.progress(), 1300)
+            setInterval(() => this.progress(), 1800)
             :
             null
           }
