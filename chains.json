@@ -178,5 +178,29 @@
         "address": "0x5c702Fbbcfb8EF5cc70c4E4341AA437ef9D55281"
       }
     }
+  },
+  "0xedc3870a4cc8fda60d5fe82207938fa34ea6f2a578de8920dc6281c9880339c0": {
+    "contracts": {
+      "0xcb199c48d44f4f356a7cf7577ff119603499778afb6fbf60dc9c14470a34c6a2": {
+        "name": "Governance",
+        "address": "0x5c702Fbbcfb8EF5cc70c4E4341AA437ef9D55281"
+      }
+    }
+  },
+  "0x46b4d2e7785df1a1d0a6edaa9c3f1d344eec82ad439d0aa6a4a41b6b5ee81faf": {
+    "contracts": {
+      "0xcb199c48d44f4f356a7cf7577ff119603499778afb6fbf60dc9c14470a34c6a2": {
+        "name": "Governance",
+        "address": "0x5c702Fbbcfb8EF5cc70c4E4341AA437ef9D55281"
+      }
+    }
+  },
+  "0x9ca6f5b77aa0d25e9781fab02b1b3e0a9db5c209d69562472b1ae5db0c5aa4bd": {
+    "contracts": {
+      "0xcb199c48d44f4f356a7cf7577ff119603499778afb6fbf60dc9c14470a34c6a2": {
+        "name": "Governance",
+        "address": "0x5c702Fbbcfb8EF5cc70c4E4341AA437ef9D55281"
+      }
+    }
   }
 }

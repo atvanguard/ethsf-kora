@@ -12,7 +12,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <Link to="/" style={{ color: 'white' }}> Home </Link>
+          <Link to="/" style={{ color: 'white' }}> GROUPTHINK </Link>
         </header>
         <div className="App-body">
           <Switch>

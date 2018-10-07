@@ -99,7 +99,7 @@ export default class DiscussionScreen extends React.Component {
 
   async buildDiscussionPage(id) {
     const {proposal, details} = await web3Util.readProposal(parseInt(id,0));
-    let {title, comments} = details;
+    let {title, comments, description} = details;
     let option1Favorability = 0;
     comments = comments || []
     comments.forEach((comment, i) => {
@@ -114,6 +114,7 @@ export default class DiscussionScreen extends React.Component {
       email: proposal.email,
       details,
       title,
+      description,
       option1Favorability: option1Favorability > 0 ? option1Favorability / (100 * comments.length) : null, // defaults to 1/3
     })
   }
@@ -254,6 +255,7 @@ export default class DiscussionScreen extends React.Component {
                     <h3> {this.state.title || 'Grant Allocation Discussion'} </h3>
                     <i style={{ color: '#172090'}}> #ResourceAllocationTemplate </i>
                     <h4> October 2018 </h4>
+                    <p> {this.state.description} </p>
                     <a href="https://ethereum-magicians.org/t/eip-999-restore-contract-code-at-0x863df6bfa4/130"> View Full EIP Document </a>
                 </div>
                 <div className='discussion-tags' style={{ maxWidth: `100%`, display: 'flex', justifyContent: 'center' }}>

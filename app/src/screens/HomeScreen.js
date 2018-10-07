@@ -65,8 +65,8 @@ export default class HomeScreen extends React.Component {
          </Modal>
 
         <button onClick={this.toggleModal} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#4a6dff', position: 'fixed', bottom: 0, right: 20, height: 50, width: 50, borderRadius: '50%' }}>
-           <h1>+</h1>
-         </button>
+           <h4>+</h4>
+        </button>
       </div>
     )
   }

@@ -24,7 +24,7 @@ module.exports = {
                         // When set to "auto", Embark will automatically set the cors to the address of the webserver
     wsHost: "localhost", // WS-RPC server listening interface (default: "localhost")
     wsPort: 8546, // WS-RPC server listening port (default: 8546)
-    simulatorMnemonic: "example exile argue silk regular smile grass bomb merge arm assist farm", // Mnemonic  used by the simulator to generate a wallet
+    simulatorMnemonic: "explain tackle mirror kit van hammer degree position ginger unfair soup bonus", // Mnemonic  used by the simulator to generate a wallet
     simulatorBlocktime: 0 // Specify blockTime in seconds for automatic mining. Default is 0 and no auto-mining.
   },
   testnet: {
