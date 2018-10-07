@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aragon/ui": "^0.19.0",
     "@bloomprotocol/share-kit": "^1.1.1",
     "cors": "^2.8.4",
     "express": "^4.16.3",
+    "moment": "^2.22.2",
     "rc-slider": "^8.6.3",
     "rc-tooltip": "^3.7.3",
     "react": "^16.5.2",
