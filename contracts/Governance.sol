@@ -41,9 +41,11 @@ contract Governance {
   function readProposal(uint256 id)
   public view
   validProposal(id)
-  returns(string dataHash) {
+  returns(string dataHash, address owner, uint256 minTokensSpent) {
     Proposal storage proposal = proposals[id];
     dataHash = proposal.dataHash;
+    owner = proposal.owner;
+    minTokensSpent = proposal.minTokensSpent;
   }
 
   function assignTokens(uint256 id, address _address, uint256 tokens)

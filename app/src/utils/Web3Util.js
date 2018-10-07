@@ -1,6 +1,5 @@
 import EmbarkJS from 'Embark/EmbarkJS';
 import Governance from 'Embark/contracts/Governance';
-import web3 from 'web3';
 
 class Web3Util {
   async getAccount() {
@@ -32,9 +31,10 @@ class Web3Util {
   @param id - proposal id
   */
   async readProposal(id) {
-    const dataHash = await Governance.methods.readProposal(id).call();
-    const details = await this.decodeIpfsHash(dataHash, true);
-    return details;
+    const proposal = await Governance.methods.readProposal(id).call();
+    console.log(proposal)
+    proposal.details = await this.decodeIpfsHash(proposal.dataHash, true);
+    return proposal;
   }
 
   /*

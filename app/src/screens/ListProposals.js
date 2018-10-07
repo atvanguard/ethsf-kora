@@ -54,6 +54,22 @@ export default class Home extends React.Component {
   async getProposals() {
     const counter = await web3Util.getCounter();
     console.log('counter', counter);
+    const eips = []
+    for(let i = 0; i < counter; i++) {
+      const proposal = await web3Util.readProposal(i);
+      console.log(proposal)
+      eips.push({
+        title: proposal.details.title,
+        // description: proposal.details.description,
+        authorAddress: proposal.owner,
+        tokensSpent: proposal.minTokensSpent,
+        tags: ['Debate'],
+        date: Date.now(),
+        stakeholders: ['Ethereum Foundation'],
+        dueDate: Date.now(),
+      })
+    }
+    this.setState({eips})
   }
 
 

@@ -37,7 +37,7 @@ export default class CreateProposal extends React.Component {
       // const startsAt = Date.parse(this.state.startsAt) / 1000;
       const endsAt = Date.parse(this.state.endsAt) / 1000;
       const details = {
-        question: this.state.hackathonName,
+        title: this.state.hackathonName,
         description: this.state.description
       }
       await web3Util.newProposal(details, this.state.tokens /* minTokens */);
@@ -74,7 +74,7 @@ export default class CreateProposal extends React.Component {
           <div class="form-group">
             <label for="hackathonName">Question</label>
             <input type="text" class="form-control" id="hackathonName"
-              placeholder="Enter Hackathon name"
+              placeholder="Enter Proposal question"
               value={this.state.hackathonName}
               onChange={(e) => this.handleChange(e, 'hackathonName')} />
           </div>
@@ -82,7 +82,7 @@ export default class CreateProposal extends React.Component {
           <div class="form-group">
             <label for="description">description</label>
             <input type="text" class="form-control" id="description"
-              placeholder="Enter Hackathon name"
+              placeholder="Enter description"
               value={this.state.description}
               onChange={(e) => this.handleChange(e, 'description')} />
           </div>
