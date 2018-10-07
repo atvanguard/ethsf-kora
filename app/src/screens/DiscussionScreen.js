@@ -244,8 +244,8 @@ export default class DiscussionScreen extends React.Component {
     }
     return (
       <div>
-      <Badge style={{ backgroundColor: '#4a6dff'}}> <p>Token balance: {this.state.addressBalance} </p> </Badge>
-      <Badge style={{ backgroundColor: '#4a6dff'}}> <p>Email: {this.state.email} </p> </Badge>
+      <Badge style={{ backgroundColor: '#4a6dff', paddingTop: 3, paddingBottom: 3, marginRight: 4}}> <p className='lead'>Token balance: {this.state.addressBalance} </p> </Badge>
+      <Badge style={{ backgroundColor: '#4a6dff', paddingTop: 3, paddingBottom: 3, marginLeft: 4}}> <p className='lead'>Email: {this.state.email} </p> </Badge>
       <Grid>
           <Grid className='App-discussion' style={{ background: 'white', color: 'black', padding: 20}}>
             <Row className='discussion-card' style={{ flex: 2, padding: 10, marginRight: 5 }}>
@@ -276,13 +276,13 @@ export default class DiscussionScreen extends React.Component {
             </Row>
             <Row style={{ padding: 30 }}>
               <Col mdPush={3} md={3}>
-                <Label bsStyle="primary" style={{ padding: 5 }}> Option 1</Label>
+                <Label bsStyle="primary" style={{ padding: 6 }}> Option 1: Fourthstate </Label>
                 <CircleGraph value={option1Favorability} />
                 <p> Fourthstate is a Minimum Viable Plasma implementation by a group of students stemming from Blockchain at Berkeley, one of the most promising educational initiatives in the ecosystem </p>
                 <a href="https://github.com/fourthstate" alt="fourthstate"> https://github.com/fourthstate </a>
               </Col>
               <Col mdPush={3} md={3}>
-                <Label bsStyle="primary" style={{ padding: 5 }}> Option 2 </Label>
+                <Label bsStyle="primary" style={{ padding: 6 }}> Option 2: Web3j </Label>
                 <CircleGraph value={option2Favorability}  />
                 <p> Web3j by Conor Svensson: a lightweight, highly modular, reactive, type-safe Java and Android library for Ethereum Network smart contracts and client integration. Asking for $96,000 </p>
                 <a href="https://github.com/web3j/web3j" alt="web3"> https://github.com/web3j/web3j </a>
@@ -308,7 +308,7 @@ export default class DiscussionScreen extends React.Component {
                         lineHeight: 1.37,
                         letterSpacing: -0.9,
                         textAlign: 'left',
-                        color: '#291a41'
+                        color: 'black'
                       }}> Enter your comments about the proposal. </ControlLabel>
                     <FormControl
                       type="text"
@@ -320,7 +320,7 @@ export default class DiscussionScreen extends React.Component {
                         height: 131.9,
                         opacity: 0.3,
                         borderRadius: 10,
-                        border: `solid 2px #cfd8ed`
+                        border: `solid 2px #black`
                       }}
                     />
                     <FormControl.Feedback />
@@ -330,9 +330,9 @@ export default class DiscussionScreen extends React.Component {
                 <Col>
                   <h4>Drag handle to your desired allocation ratio:</h4>
                   <div style={{ display: 'flex' }}>
-                    <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}> Option 1 </Badge>
+                    <Badge style={{ padding: 9 }}>  Option 1 </Badge>
                     <Range min={0} max={100} value={[this.state.rangeValue]} defaultValue={[50]} tipFormatter={value => `${value}%`} onChange={this.handleChangeRange} />
-                    <Badge style={{ padding: 15, marginRight: 5, display: 'flex'}}> Option 2 </Badge>
+                    <Badge style={{ padding: 9 }}> Option 2 </Badge>
                   </div>
                 </Col>
                   <button
