@@ -32,7 +32,7 @@ export default class DiscussionScreen extends React.Component {
       thresholdReached: false,
       loadingProgress: 0,
       addressBalance: 0,
-      email: 'yj@parity.io',
+      email: '',
       comments: [
         {
           id: 1,
@@ -236,11 +236,15 @@ export default class DiscussionScreen extends React.Component {
   }
 
   render() {
-    const option1Favorability = this.state.option1Favorability == null ? 1/3 : this.state.option1Favorability;
+    let option1Favorability = 0, option2Favorability = 0;
+    if(this.state.option1Favorability != null) {
+      option1Favorability = this.state.option1Favorability;
+      option2Favorability = 1 - this.state.option1Favorability;
+    }
     return (
       <div>
       <Badge style={{ backgroundColor: '#4a6dff'}}> <p>Token balance: {this.state.addressBalance} </p> </Badge>
-      <Badge style={{ backgroundColor: '#4a6dff'}}> <p>Email: yj@parity.io </p> </Badge>
+      <Badge style={{ backgroundColor: '#4a6dff'}}> <p>Email: {this.state.email} </p> </Badge>
       <Grid>
           <Grid className='App-discussion' style={{ background: 'white', color: 'black', padding: 20}}>
             <Row className='discussion-card' style={{ flex: 2, padding: 10, marginRight: 5 }}>
@@ -277,7 +281,7 @@ export default class DiscussionScreen extends React.Component {
               </Col>
               <Col mdPush={3} md={3}>
                 <Label bsStyle="primary" style={{ padding: 5 }}> Option 2 </Label>
-                <CircleGraph value={1 - option1Favorability}  />
+                <CircleGraph value={option2Favorability}  />
                 <p> Web3j by Conor Svensson: a lightweight, highly modular, reactive, type-safe Java and Android library for Ethereum Network smart contracts and client integration. Asking for $96,000 </p>
                 <a href="https://github.com/web3j/web3j" alt="web3"> https://github.com/web3j/web3j </a>
               </Col>

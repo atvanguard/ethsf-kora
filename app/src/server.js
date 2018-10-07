@@ -145,14 +145,15 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 //   console.log(payload)
 // })
 
-app.post('/receiveBloomData', cors(), (req, res) => {
+app.post('/receiveBloomData/:id', cors(), (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   console.log(`Received data for request token`)
   // console.log(JSON.stringify(req.body, null, 4))
   console.dir(req.body, {depth: null})
   // find eth address from bloom id and save email
   var assignTo = '0x8401Eb5ff34cc943f096A32EF3d5113FEbE8D4Eb';
-  Governance.methods.assignTokens(0, assignTo, 'arpitagarwal@iitj.ac.in', 50).send()
+  console.log(parseInt(req.params.id));
+  Governance.methods.assignTokens(parseInt(req.params.id), assignTo, 'arpitagarwal@iitj.ac.in', 50).send()
   .then(() => console.log('tokens assigned'))
   .catch(err => console.log(err))
 

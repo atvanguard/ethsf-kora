@@ -82,8 +82,6 @@ export default class CreateProposal extends React.Component {
           this.state.backendError !== '' &&
           <Alert bsStyle="danger">{this.state.backendError}</Alert>
         }
-        <p class="lead">Associated Email: yj@parity.io</p>
-        <i>Automagically retreived email through Bloom</i>
         <form onSubmit={this.handleSubmit}>
           <FormGroup>
             <ControlLabel
