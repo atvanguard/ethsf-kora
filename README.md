@@ -18,3 +18,7 @@ or
 npm install -g embark
 embark run
 ```
+
+```
+ganache-cli -m "explain tackle mirror kit van hammer degree position ginger unfair soup bonus"
+```
