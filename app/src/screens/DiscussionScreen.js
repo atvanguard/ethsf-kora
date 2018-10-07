@@ -30,6 +30,8 @@ export default class DiscussionScreen extends React.Component {
       showBloomAuthModal: false,
       thresholdReached: false,
       loadingProgress: 0,
+      addressBalance: 0,
+      email: '',
       comments: [
         {
           id: 1,
@@ -107,6 +109,8 @@ export default class DiscussionScreen extends React.Component {
     console.log('comments', comments)
     // const numComments = comments.length;
     this.setState({
+      addressBalance: proposal.addressBalance,
+      email: proposal.email,
       details,
       title,
       option1Favorability: option1Favorability > 0 ? option1Favorability / (100 * comments.length) : null, // defaults to 1/3
@@ -137,7 +141,7 @@ export default class DiscussionScreen extends React.Component {
         option1Favorability: this.state.rangeValue,
         user: {
           name: 'Bjorn',
-          email: 'comes from bloom auth',
+          email: this.state.email,
           avatar: 'https://bestshelvingunits.com/wp-content/uploads/2016/02/avatarnew.png'
         }
       });
@@ -193,12 +197,13 @@ export default class DiscussionScreen extends React.Component {
     const defaultData = {
       action: Action.attestation,
       token: 'a08714b92346a1bba4262ed575d23de3ff3e6b5480ad0e1c82c011bab0411fdf',
-      url: 'http://localhost:3000/api/bloomShareReceiveData',
+      url: 'https://0f68c00b.ngrok.io/receiveBloomData',
+      // url: 'https://bloom.co/receiveBloomData',
       org_logo_url: 'https://bloom.co/images/notif/bloom-logo.png',
       org_name: 'MahDemocracy',
       org_usage_policy_url: 'https://bloom.co/legal/terms',
       org_privacy_policy_url: 'https://bloom.co/legal/privacy',
-      types: ['email'],
+      types: ['email', 'phone'],
     }
 
     return (
@@ -232,6 +237,8 @@ export default class DiscussionScreen extends React.Component {
   render() {
     const option1Favorability = this.state.option1Favorability == null ? 1/3 : this.state.option1Favorability;
     return (
+      <div>
+      <p>Token balance: {this.state.addressBalance}, email: {this.state.email}</p>
       <Grid>
           <Grid className='App-discussion' style={{ background: 'white', color: 'black', padding: 20}}>
             <Row className='discussion-card' style={{ flex: 2, padding: 10, marginRight: 5 }}>
@@ -418,6 +425,7 @@ This discussion will engage our 8 founding members as stakeholders in the grant 
             null
           }
       </Grid>
+      </div>
     );
   }
 }
