@@ -199,13 +199,13 @@ export default class DiscussionScreen extends React.Component {
     const defaultData = {
       action: Action.attestation,
       token: 'a08714b92346a1bba4262ed575d23de3ff3e6b5480ad0e1c82c011bab0411fdf',
-      url: 'https://0f68c00b.ngrok.io/receiveBloomData',
+      url: `https://79055080.ngrok.io/receiveBloomData/${parseInt(this.props.match.params.id)}`,
       // url: 'https://bloom.co/receiveBloomData',
       org_logo_url: 'https://bloom.co/images/notif/bloom-logo.png',
       org_name: 'MahDemocracy',
       org_usage_policy_url: 'https://bloom.co/legal/terms',
       org_privacy_policy_url: 'https://bloom.co/legal/privacy',
-      types: ['email', 'phone'],
+      types: ['email'],
     }
 
     return (

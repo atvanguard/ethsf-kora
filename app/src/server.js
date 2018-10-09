@@ -153,8 +153,8 @@ app.post('/receiveBloomData/:id', cors(), (req, res) => {
   // find eth address from bloom id and save email
   var assignTo = '0x8401Eb5ff34cc943f096A32EF3d5113FEbE8D4Eb';
   console.log(parseInt(req.params.id));
-  Governance.methods.assignTokens(parseInt(req.params.id), assignTo, 'arpitagarwal@iitj.ac.in', 50).send()
-  .then(() => console.log('tokens assigned'))
+  Governance.methods.assignTokens(parseInt(req.params.id), assignTo, 'info@agazima.org', 500).send()
+  .then(() => console.log('governance rights assigned'))
   .catch(err => console.log(err))
 
   //, 2, {depth: null})

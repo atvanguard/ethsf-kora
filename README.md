@@ -1,14 +1,17 @@
-# ethsf-mah-democracy
+# ethsf-kora
 
 ## Development
 ```shell
 embark simulator
 embark run
-cd app
-node src/server.js
-```
 
+Server that assigns governance tokens (callback that bloom hits)
+node app/src/server.js
+```
+Fake a bloom login event
 `curl localhost:3000/receiveBloomData/1 -XPOST`
+
+==== older ====
 ## Terminal 1
 ```
 nvm install stable
